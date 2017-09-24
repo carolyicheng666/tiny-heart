@@ -20,6 +20,23 @@ var baby;
 var mx;
 var my;
 
+var babyTail = [];
+var babyEye = [];
+var babyBody = [];
+
+var momTail = [];
+var momEye = [];
+var momBodyOrange = [];
+var momBodyBlue = [];
+
+var data;
+
+var wave;
+var halo;
+
+var dust;
+var dustPic = [];
+
 document.body.onload = game;
 function game() {
 	init();
@@ -52,6 +69,56 @@ function init() {
 
 	mx = canWidth * 0.5;
 	my = canHeight * 0.5;
+
+	for (var i = 0; i < 8; i++) {
+		babyTail[i] = new Image();
+		babyTail[i].src = "./images/babyTail" + i + ".png";
+	}
+
+	for (var i = 0; i < 2; i++) {
+		babyEye[i] = new Image();
+		babyEye[i].src = "./images/babyEye" + i + ".png";
+	}
+
+	for (var i = 0; i < 20; i++) {
+		babyBody[i] = new Image();
+		babyBody[i].src = "./images/babyFade" + i + ".png";
+	}
+
+	for (var i = 0; i < 8; i++) {
+		momTail[i] = new Image();
+		momTail[i].src = "./images/bigTail" + i + ".png";
+	}
+
+	for (var i = 0; i < 2; i++) {
+		momEye[i] = new Image();
+		momEye[i].src = "./images/bigEye" + i + ".png";
+	}
+
+	data = new dataObj();
+
+	for (var i = 0; i < 8; i++) {
+		momBodyOrange[i] = new Image();
+		momBodyOrange[i].src = "./images/bigSwim" + i + ".png";
+		momBodyBlue[i] = new Image();
+		momBodyBlue[i].src = "./images/bigSwimBlue" + i + ".png";
+	}
+	ctx1.font = "30px Verdana";
+	ctx1.textAlign = "center";
+
+	wave = new waveObj();
+	wave.init();
+
+	halo = new haloObj();
+	halo.init();
+
+	for (var i = 0; i < 7; i++) {
+		dustPic[i] = new Image();
+		dustPic[i].src = "./images/dust" + i + ".png";
+	}
+
+	dust = new dustObj();
+	dust.init();
 }
 
 function gameloop() {
@@ -72,13 +139,21 @@ function gameloop() {
 
 	ctx1.clearRect(0, 0, canWidth, canHeight);
 	mom.draw();
-	momFruitCollision();
 	baby.draw();
+	momFruitCollision();
+	momBabyCollision();
+
+	data.draw();
+	wave.draw();
+	halo.draw();
+	dust.draw();
 }
 
 function onMouseMove(e) {
-	if (e.offSetX || e.layerX) {
-		mx = e.offSetX == undefined ? e.layerX : e.offSetX;
-		my = e.offSetY == undefined ? e.layerY : e.offSetY;
+	if (!data.gameOver) {
+		if (e.offSetX || e.layerX) {
+			mx = e.offSetX == undefined ? e.layerX : e.offSetX;
+			my = e.offSetY == undefined ? e.layerY : e.offSetY;
+		}
 	}
 }
